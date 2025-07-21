@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # Backend Service (Node.js/Express)
+  server:
+    build: ./backend
+    container_name: mern-backend
+    ports:
+      - "${PORT}:${PORT}"  # Uses value from .env
+    environment:
+      MONGO_URI: "${MONGO_URI}"
+      PORT: "${PORT}"
+    restart: unless-stopped
+
+  # Frontend Service (React)
+  client:
+    build: ./frontend
+    container_name: mern-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    restart: unless-stopped
