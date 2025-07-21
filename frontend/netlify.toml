@@ -1,0 +1,10 @@
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://georeport-backend-795753085043.asia-south1.run.app/api/:splat"
+  status = 200
+  force = true
