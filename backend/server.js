@@ -12,31 +12,23 @@ connectDB();
 
 const app = express();
 
-// // ✅ Allowed frontend origins
-// const allowedOrigins = [
-//   'https://georeport-frontend-795753085043.asia-south1.run.app'
-// ];
+// Add this array definition
+const allowedOrigins = [
+  'https://geo-report.netlify.app',
+  // 'https://georeport-frontend-795753085043.asia-south1.run.app'
+];
 
-// // ✅ Enable CORS
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     if (!origin) return callback(null, true); // allow non-browser tools like Postman
-//     if (allowedOrigins.includes(origin)) {
-//       return callback(null, true);
-//     } else {
-//       return callback(new Error(`CORS Error: Origin ${origin} not allowed`));
-//     }
-//   },
-//   credentials: true
-// }));
-
-const corsOptions = {
-  origin: process.env.FRONTEND_URL, // Allow any origin if not specified
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-}
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
+}));
 
 // Body parser
 app.use(express.json({ limit: '10mb' }));
