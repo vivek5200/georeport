@@ -423,8 +423,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For issues, questions, or feature requests:
-- Open an issue in the [GitHub Issue Tracker](https://github.com/yourusername/georeport/issues)
-- Contact: your.email@example.com
+- Contact: bendrevivek0@gmail.com
 
 ---
 
