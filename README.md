@@ -405,9 +405,9 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 ## 👥 Authors
 
-**Your Name** - *Full Stack Developer*
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+**Vivek-Bendre** - *Full Stack Developer*
+- GitHub: [@yourusername](https://github.com/vivek5200)
+- LinkedIn: [Your LinkedIn](https://linkedin.com/in/vivek-bendre)
 
 ---
 
