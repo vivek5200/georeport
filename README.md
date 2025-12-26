@@ -406,8 +406,8 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 ## 👥 Authors
 
 **Vivek-Bendre** - *Full Stack Developer*
-- GitHub: [@yourusername](https://github.com/vivek5200)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/vivek-bendre)
+- GitHub: [@vivek5200](https://github.com/vivek5200)
+- LinkedIn: [Click Here](https://linkedin.com/in/vivek-bendre)
 
 ---
 
