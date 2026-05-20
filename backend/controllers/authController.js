@@ -99,17 +99,45 @@ exports.register = async (req, res, next) => {
       }
     }
 
-    // Create user
-    const user = await User.create({
-      name,
-      email,
-      mobile,
-      password,
-      role,
-      ...(role === 'authority' && { assignedRegion: region, isApproved: false }),
-      ...(role === 'citizen' && { location, isApproved: true })
-    });
-
+    // Check if user exists
+    let user = await User.findOne({ email });
+    
+    if (user) {
+      // If they are already verified, they shouldn't be registering
+      if (user.isVerified) {
+        return next(new ErrorResponse('Email is already registered. Please log in.', 400));
+      }
+      
+      // If they exist but aren't verified, update their info and resend OTP
+      user.name = name;
+      user.mobile = mobile;
+      user.password = password; // Will be hashed by pre-save hook
+      user.role = role;
+      
+      if (role === 'authority') {
+        user.assignedRegion = region;
+        user.isApproved = false;
+      } else if (role === 'citizen') {
+        user.location = location;
+        user.isApproved = true;
+      }
+      
+      await user.save();
+      
+      // Delete old OTPs if they exist
+      await OTP.deleteMany({ email });
+    } else {
+      // Create new user
+      user = await User.create({
+        name,
+        email,
+        mobile,
+        password,
+        role,
+        ...(role === 'authority' && { assignedRegion: region, isApproved: false }),
+        ...(role === 'citizen' && { location, isApproved: true })
+      });
+    }
 
     // Create authority request
     if (role === 'authority') {
