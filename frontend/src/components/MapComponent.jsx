@@ -11,6 +11,7 @@ import Point from "ol/geom/Point"
 import { Style, Circle, Fill, Stroke, Text } from "ol/style"
 import { fromLonLat, toLonLat } from "ol/proj"
 import Overlay from "ol/Overlay"
+import Draw from "ol/interaction/Draw"
 import { X, Navigation, Info, MapPin } from "lucide-react"
 import { debounce } from "lodash"
 
@@ -33,6 +34,7 @@ function MapComponent({
   const [drawnFeatures, setDrawnFeatures] = useState([])
   const vectorSourceRef = useRef(new VectorSource())
   const drawSourceRef = useRef(new VectorSource())
+  const drawInteractionRef = useRef(null)
 
   useEffect(() => {
     if (!mapInstanceRef.current) {
@@ -231,21 +233,45 @@ function MapComponent({
   const enableDrawing = () => {
     if (!mapInstanceRef.current) return
     
+    // Remove existing interaction if any
+    if (drawInteractionRef.current) {
+      mapInstanceRef.current.removeInteraction(drawInteractionRef.current)
+    }
+    
     setDrawingMode(true)
     drawSourceRef.current.clear()
     
-    // Implement drawing logic here
-    // For example using ol-draw or similar
-    // This is a placeholder for the drawing functionality
-    console.log("Drawing mode enabled")
+    const draw = new Draw({
+      source: drawSourceRef.current,
+      type: "Polygon",
+    })
     
-    // When drawing is complete:
-    // onDrawingComplete?.(coordinates)
+    draw.on("drawend", (event) => {
+      const geometry = event.feature.getGeometry()
+      // Clone and transform geometry to LonLat (EPSG:4326) for backend storage
+      const clonedGeometry = geometry.clone().transform("EPSG:3857", "EPSG:4326")
+      const coordinates = clonedGeometry.getCoordinates()[0]
+      
+      onDrawingComplete?.(coordinates)
+      
+      // Remove drawing interaction after completing one polygon
+      mapInstanceRef.current.removeInteraction(draw)
+      drawInteractionRef.current = null
+      setDrawingMode(false)
+    })
+    
+    mapInstanceRef.current.addInteraction(draw)
+    drawInteractionRef.current = draw
   }
 
   const clearDrawings = () => {
+    if (drawInteractionRef.current && mapInstanceRef.current) {
+      mapInstanceRef.current.removeInteraction(drawInteractionRef.current)
+      drawInteractionRef.current = null
+    }
     drawSourceRef.current.clear()
     setDrawingMode(false)
+    onDrawingComplete?.(null)
   }
 
   const closePopup = () => {
