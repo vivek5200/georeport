@@ -8,8 +8,18 @@ services:
     ports:
       - "${PORT}:${PORT}"  # Uses value from .env
     environment:
-      MONGO_URI: "${MONGO_URI}"
-      PORT: "${PORT}"
+      MONGODB_URI: "${MONGODB_URI}"
+      PORT: "${PORT:-5000}"
+      JWT_SECRET: "${JWT_SECRET}"
+      JWT_EXPIRE: "${JWT_EXPIRE:-30d}"
+      REDIS_URL: "${REDIS_URL}"
+      SMTP_HOST: "${SMTP_HOST}"
+      SMTP_PORT: "${SMTP_PORT}"
+      SMTP_USER: "${SMTP_USER}"
+      SMTP_PASS: "${SMTP_PASS}"
+      ADMIN_EMAIL: "${ADMIN_EMAIL}"
+      FRONTEND_URL: "${FRONTEND_URL}"
+      NODE_ENV: "${NODE_ENV:-production}"
     restart: unless-stopped
 
   # Frontend Service (React)

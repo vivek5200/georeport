@@ -15,8 +15,12 @@ const app = express();
 // Add this array definition
 const allowedOrigins = [
   'https://geo-report.netlify.app',
-  // 'https://georeport-frontend-795753085043.asia-south1.run.app'
+  'http://localhost:5173'
 ];
+
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
 
 app.use(cors({
   origin: function (origin, callback) {

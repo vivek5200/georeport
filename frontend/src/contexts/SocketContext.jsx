@@ -13,7 +13,8 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     if (isAuthenticated && user) {
-      const newSocket = io(import.meta.env.VITE_API_URL, {
+      const socketUrl = import.meta.env.VITE_SOCKET_URL || "/";
+      const newSocket = io(socketUrl, {
         auth: {
           token: localStorage.getItem("token"),
         },

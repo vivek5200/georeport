@@ -20,9 +20,13 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: env.VITE_API_URL,
+          target: 'http://localhost:5000',
           changeOrigin: true,
           secure: false, // Set to true if using HTTPS and certs are valid
+        },
+        '/socket.io': {
+          target: 'http://localhost:5000',
+          ws: true,
         },
       },
     },

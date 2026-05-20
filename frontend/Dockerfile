@@ -8,6 +8,8 @@ RUN npm run build
 
 # Stage 2: Serve the application using Nginx
 FROM nginx:stable-alpine
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copy the built files from the 'build' stage
 # Changed /app/build to /app/dist to match Vite's output
 COPY --from=build /app/dist /usr/share/nginx/html
